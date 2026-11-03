@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <AssemblyName>AdSkipTray</AssemblyName>
+    <RootNamespace>VMCI.AdSkip.Tray</RootNamespace>
+    <ApplicationIcon>Resources\AdSkip.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VMCI.AdSkip.Automation\VMCI.AdSkip.Automation.csproj" />
+    <ProjectReference Include="..\VMCI.AdSkip.Core\VMCI.AdSkip.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AdSkip.ico" LogicalName="AdSkip.ico" />
+    <EmbeddedResource Include="Resources\AdSkipPaused.ico" LogicalName="AdSkipPaused.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- One settings file for the console and the tray app. -->
+    <None Include="..\VMCI.AdSkip\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

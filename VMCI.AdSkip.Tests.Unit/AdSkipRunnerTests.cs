@@ -88,7 +88,7 @@ public class AdSkipRunnerTests
     {
         await new AdSkipRunner(new FakeSkipper(), _settings, _log, _time).RunAsync(new CancellationToken(canceled: true));
 
-        Assert.Equal("AdSkip watching chrome, firefox every 500 ms. Press Ctrl+C to stop.", _log.Infos[0]);
+        Assert.Equal("AdSkip watching chrome, firefox every 500 ms.", _log.Infos[0]);
         Assert.Empty(_log.Warnings);
     }
 

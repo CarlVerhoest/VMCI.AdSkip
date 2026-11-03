@@ -1,5 +1,7 @@
-# Publishes AdSkip.exe (framework-dependent, single file) with its appsettings.json to .\publish
-# Requires the .NET 10 Desktop Runtime on the machine that runs it.
+# Publishes AdSkip to .\publish:
+#  - AdSkipTray.exe: tray app, self-contained (no .NET install needed), the one to copy to other machines
+#  - AdSkip.exe:     console app, framework-dependent (needs the .NET 10 Desktop Runtime), handy for testing
+#  - appsettings.json, shared by both
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
 $output = Join-Path $root 'publish'
@@ -10,4 +12,12 @@ dotnet publish (Join-Path $root 'VMCI.AdSkip\VMCI.AdSkip.csproj') `
     -o $output
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "Published to $output\AdSkip.exe"
+dotnet publish (Join-Path $root 'VMCI.AdSkip.Tray\VMCI.AdSkip.Tray.csproj') `
+    -c Release -r win-x64 --self-contained true `
+    -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true `
+    -p:DebugType=None `
+    -o $output
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "Published to $output"
+Get-ChildItem $output | Format-Table Name, @{ n = 'Size (MB)'; e = { [math]::Round($_.Length / 1MB, 1) } }

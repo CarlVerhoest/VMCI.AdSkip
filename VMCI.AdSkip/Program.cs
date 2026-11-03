@@ -5,11 +5,11 @@ using VMCI.AdSkip.Core;
 if (args.Any(a => a is "-h" or "--help" or "/?"))
 {
     Console.WriteLine("""
-        AdSkip - presses YouTube's "Skip" button in Chrome for you.
+        AdSkip - presses YouTube's "Skip" button in Chrome or Firefox for you.
 
         Usage: AdSkip [--help]
 
-        Runs until you press Ctrl+C. Settings (process names, matching patterns, timings)
+        Runs until you press Ctrl+C. Settings (browsers, matching patterns, timings)
         are read from appsettings.json next to AdSkip.exe.
 
         If ads are not detected, start Chrome with --force-renderer-accessibility.
@@ -39,6 +39,7 @@ Console.CancelKeyPress += (_, e) =>
     cts.Cancel();
 };
 
+log.Info("Press Ctrl+C to stop.");
 using var windowSource = new FlaUiBrowserWindowSource();
 var skipper = new AdSkipper(windowSource, settings, log, TimeProvider.System);
 await new AdSkipRunner(skipper, settings, log, TimeProvider.System).RunAsync(cts.Token);
