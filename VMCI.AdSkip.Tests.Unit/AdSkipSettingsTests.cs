@@ -29,6 +29,7 @@ public class AdSkipSettingsTests
         { nameof(BrowserSettings.WindowClass), s => s.Browsers = [TestData.Chrome, new() { ProcessName = "firefox" }] },
         { nameof(AdSkipSettings.PlayerAutomationId), s => s.PlayerAutomationId = "" },
         { nameof(AdSkipSettings.AdShowingClass), s => s.AdShowingClass = " " },
+        { nameof(AdSkipSettings.PausedClass), s => s.PausedClass = "" },
         { nameof(AdSkipSettings.SkipButtonClassPatterns), s => { s.SkipButtonClassPatterns = []; s.SkipButtonNamePatterns = []; } },
         { "Invalid regular expression: '(unclosed'", s => s.SkipButtonClassPatterns = ["(unclosed"] },
         { "Invalid regular expression: ''", s => s.SkipButtonNamePatterns = [""] },

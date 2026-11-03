@@ -13,7 +13,8 @@ Chrome and Firefox expose web pages to Windows UI Automation (the API screen rea
    the player has the `ad-showing` class, a button named "Skip" or "Overslaan";
 4. presses it through UI Automation (`Invoke`, the mouse does not move), or with a real mouse click if that is not supported.
 
-When an ad shows for 15 seconds without a skip button being found, a yellow warning is printed: either the ad
+When an ad plays for 15 seconds without a skip button being found (paused time does not count, since YouTube's
+skip countdown stops while paused), a yellow warning is printed: either the ad
 is unskippable, or YouTube changed its markup and the patterns in `appsettings.json` need an update.
 
 ## Usage
@@ -47,6 +48,7 @@ If ads are never detected, Chrome is not exposing web content: start Chrome with
 | `Browsers` | `chrome` (`Chrome_WidgetWin_1`), `firefox` (`MozillaWindowClass`) | Browsers to scan: `ProcessName` (without .exe) and the `WindowClass` of its top-level windows |
 | `PlayerAutomationId` | `movie_player` | HTML id of the YouTube player |
 | `AdShowingClass` | `ad-showing` | Player CSS class while an ad plays |
+| `PausedClass` | `paused-mode` | Player CSS class while paused; a paused ad does not count towards the warning |
 | `SkipButtonClassPatterns` | `ytp-ad-skip-button`, `ytp-skip-ad-button` | Regexes on the button's CSS classes |
 | `SkipButtonNamePatterns` | `^\s*skip`, `^\s*overslaan` | Fallback regexes on the button's name, only while an ad shows |
 | `NoSkipWarningSeconds` | 15 | Warn when no skip button shows up within this time |

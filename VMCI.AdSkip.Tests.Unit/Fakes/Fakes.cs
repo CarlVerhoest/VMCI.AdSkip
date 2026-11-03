@@ -4,7 +4,8 @@ namespace VMCI.AdSkip.Tests.Unit.Fakes;
 
 internal static class TestData
 {
-    public const string PlayerWithAd = "html5-video-player ytp-hide-controls ad-created ad-showing ad-interrupting paused-mode";
+    public const string PlayerWithAd = "html5-video-player ytp-hide-controls ad-created ad-showing ad-interrupting playing-mode";
+    public const string PlayerWithPausedAd = "html5-video-player ytp-hide-controls ad-created ad-showing ad-interrupting paused-mode";
     public const string PlayerWithoutAd = "html5-video-player ytp-hide-controls ad-created paused-mode";
     public const string SkipButtonClass = "ytp-ad-skip-button-modern ytp-button ";
 

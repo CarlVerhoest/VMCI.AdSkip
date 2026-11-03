@@ -61,6 +61,14 @@ public class SkipButtonMatcherTests
         Assert.False(matcher.IsAdShowing("player ad-showing"));
     }
 
+    [Theory]
+    [InlineData(TestData.PlayerWithPausedAd, true)]
+    [InlineData(TestData.PlayerWithAd, false)]
+    [InlineData("player paused-mode-x", false)]
+    [InlineData(null, false)]
+    public void IsPaused_matches_whole_class(string? className, bool expected) =>
+        Assert.Equal(expected, _matcher.IsPaused(className));
+
     [Fact]
     public void Works_with_only_name_patterns()
     {

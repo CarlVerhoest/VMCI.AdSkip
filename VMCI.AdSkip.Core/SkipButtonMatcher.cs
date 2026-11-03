@@ -10,19 +10,21 @@ public sealed class SkipButtonMatcher
     private readonly Regex[] _classPatterns;
     private readonly Regex[] _namePatterns;
     private readonly string _adShowingClass;
+    private readonly string _pausedClass;
 
     public SkipButtonMatcher(AdSkipSettings settings)
     {
         _classPatterns = settings.SkipButtonClassPatterns.Select(Compile).ToArray();
         _namePatterns = settings.SkipButtonNamePatterns.Select(Compile).ToArray();
         _adShowingClass = settings.AdShowingClass;
+        _pausedClass = settings.PausedClass;
     }
 
     /// <summary>True when the ad-showing class is one of the player's CSS classes (whole class, not a substring).</summary>
-    public bool IsAdShowing(string? playerClassName) =>
-        (playerClassName ?? "")
-            .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)
-            .Contains(_adShowingClass, StringComparer.OrdinalIgnoreCase);
+    public bool IsAdShowing(string? playerClassName) => HasClass(playerClassName, _adShowingClass);
+
+    /// <summary>True when the paused class is one of the player's CSS classes (whole class, not a substring).</summary>
+    public bool IsPaused(string? playerClassName) => HasClass(playerClassName, _pausedClass);
 
     /// <summary>
     /// A class match is specific to ad skip buttons and always trusted; the name fallback ("Skip", "Overslaan")
@@ -34,6 +36,11 @@ public sealed class SkipButtonMatcher
         if (_classPatterns.Any(r => r.IsMatch(button.ClassName))) return true;
         return adShowing && _namePatterns.Any(r => r.IsMatch(button.Name));
     }
+
+    private static bool HasClass(string? classNames, string className) =>
+        (classNames ?? "")
+            .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)
+            .Contains(className, StringComparer.OrdinalIgnoreCase);
 
     private static Regex Compile(string pattern) =>
         new(pattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, RegexTimeout);

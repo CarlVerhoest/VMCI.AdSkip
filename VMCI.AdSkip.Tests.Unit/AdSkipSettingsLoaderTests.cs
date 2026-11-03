@@ -33,6 +33,7 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
                 ],
                 "PlayerAutomationId": "player",
                 "AdShowingClass": "ad-on",
+                "PausedClass": "halted",
                 "SkipButtonClassPatterns": [ "skip-cls" ],
                 "SkipButtonNamePatterns": [ "^next" ],
                 "NoSkipWarningSeconds": 30
@@ -48,6 +49,7 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
         Assert.Equal(["Chrome_WidgetWin_1", "MozillaWindowClass"], settings.Browsers.Select(b => b.WindowClass));
         Assert.Equal("player", settings.PlayerAutomationId);
         Assert.Equal("ad-on", settings.AdShowingClass);
+        Assert.Equal("halted", settings.PausedClass);
         Assert.Equal(["skip-cls"], settings.SkipButtonClassPatterns);
         Assert.Equal(["^next"], settings.SkipButtonNamePatterns);
         Assert.Equal(30, settings.NoSkipWarningSeconds);
@@ -75,6 +77,7 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
         Assert.Equal(500, settings.PollIntervalMs);
         Assert.Equal("movie_player", settings.PlayerAutomationId);
         Assert.Equal("ad-showing", settings.AdShowingClass);
+        Assert.Equal("paused-mode", settings.PausedClass);
     }
 
     [Fact]

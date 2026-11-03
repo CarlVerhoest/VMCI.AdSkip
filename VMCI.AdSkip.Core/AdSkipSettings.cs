@@ -21,6 +21,9 @@ public sealed class AdSkipSettings
     /// <summary>CSS class YouTube puts on the player while an ad is playing.</summary>
     public string AdShowingClass { get; set; } = "ad-showing";
 
+    /// <summary>CSS class YouTube puts on the player while it is paused; a paused ad does not count towards the warning.</summary>
+    public string PausedClass { get; set; } = "paused-mode";
+
     /// <summary>Case-insensitive regexes matched against the button's CSS classes (language independent).</summary>
     public string[] SkipButtonClassPatterns { get; set; } = [];
 
@@ -49,6 +52,8 @@ public sealed class AdSkipSettings
             errors.Add($"{nameof(PlayerAutomationId)} must not be empty.");
         if (string.IsNullOrWhiteSpace(AdShowingClass))
             errors.Add($"{nameof(AdShowingClass)} must not be empty.");
+        if (string.IsNullOrWhiteSpace(PausedClass))
+            errors.Add($"{nameof(PausedClass)} must not be empty.");
         if (SkipButtonClassPatterns.Length == 0 && SkipButtonNamePatterns.Length == 0)
             errors.Add($"At least one of {nameof(SkipButtonClassPatterns)} or {nameof(SkipButtonNamePatterns)} is required.");
 

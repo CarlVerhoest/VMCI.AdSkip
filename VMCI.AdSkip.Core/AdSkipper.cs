@@ -94,8 +94,9 @@ public sealed class AdSkipper : IAdSkipper
                 _tracker.Clear(window.Handle);
                 skipped = true;
             }
-            else if (adShowing)
+            else if (adShowing && !_matcher.IsPaused(player.ClassName))
             {
+                // A paused ad freezes YouTube's skip countdown, so only playing time counts towards the warning.
                 windowsWithAd.Add(window.Handle);
                 ReportAdWithoutSkipButton(window);
             }

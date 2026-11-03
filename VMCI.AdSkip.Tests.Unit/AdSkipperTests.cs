@@ -100,6 +100,43 @@ public class AdSkipperTests
     }
 
     [Fact]
+    public void Paused_ad_does_not_count_towards_the_warning()
+    {
+        var player = new FakePlayer(TestData.PlayerWithPausedAd);
+        var skipper = CreateSkipper(new FakeWindowSource(new FakeWindow(1, "Video - Mozilla Firefox", player)));
+
+        skipper.Tick();
+        _time.Advance(TimeSpan.FromMinutes(5));
+        skipper.Tick();
+
+        Assert.Empty(_log.Infos);
+        Assert.Empty(_log.Warnings);
+
+        player.ClassName = TestData.PlayerWithAd;
+        skipper.Tick();
+        _time.Advance(TimeSpan.FromSeconds(10));
+        skipper.Tick();
+
+        Assert.Equal("Ad playing in 'Video - Mozilla Firefox', waiting for skip button...", Assert.Single(_log.Infos));
+        Assert.Empty(_log.Warnings);
+
+        _time.Advance(TimeSpan.FromSeconds(5));
+        skipper.Tick();
+
+        Assert.Single(_log.Warnings);
+    }
+
+    [Fact]
+    public void Skip_button_of_paused_ad_is_pressed()
+    {
+        var button = new FakeButton();
+        var skipper = CreateSkipper(new FakeWindowSource(new FakeWindow(1, players: new FakePlayer(TestData.PlayerWithPausedAd, button))));
+
+        Assert.True(skipper.Tick());
+        Assert.Equal(1, button.InvokeCount);
+    }
+
+    [Fact]
     public void Skip_button_appearing_later_is_pressed()
     {
         var player = new FakePlayer(TestData.PlayerWithAd);
