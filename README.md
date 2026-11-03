@@ -1,13 +1,13 @@
 # VMCI.AdSkip
 
-Console app that presses YouTube's **Skip** button in Chrome for you, so you don't have to walk to the
+Console app that presses YouTube's **Skip** button in Chrome or Firefox for you, so you don't have to walk to the
 keyboard during a workout. It does not block ads: it waits until YouTube offers the Skip button, then presses it.
 
 ## How it works
 
-Chrome exposes web pages to Windows UI Automation (the API screen readers use). Every 500 ms AdSkip:
+Chrome and Firefox expose web pages to Windows UI Automation (the API screen readers use). Every 500 ms AdSkip:
 
-1. finds the `chrome.exe` windows (Electron apps such as Slack share Chrome's window class, so they are filtered out);
+1. finds the `chrome.exe` and `firefox.exe` windows (by window class and process: Electron apps such as Slack share Chrome's window class, so they are filtered out);
 2. looks for YouTube players (HTML id `movie_player`), also inside embedded players on other sites;
 3. presses a button inside the player whose CSS class matches `ytp-ad-skip-button…`. As a fallback, while
    the player has the `ad-showing` class, a button named "Skip" or "Overslaan";
@@ -28,13 +28,13 @@ Add the `publish` folder to your `PATH` to run `AdSkip` from any PowerShell wind
 Example output:
 
 ```
-16:24:10 AdSkip watching chrome every 500 ms. Press Ctrl+C to stop.
+16:24:10 AdSkip watching chrome, firefox every 500 ms. Press Ctrl+C to stop.
 16:24:12 Ad playing in 'LoL Esports | Vod - Google Chrome', waiting for skip button...
 16:24:25 Skipped ad #1 (baloise.be) via invoke
 ```
 
 If ads are never detected, Chrome is not exposing web content: start Chrome with
-`--force-renderer-accessibility` (for example in its shortcut).
+`--force-renderer-accessibility` (for example in its shortcut). Firefox needs no extra settings.
 
 ## Settings
 
@@ -44,7 +44,7 @@ If ads are never detected, Chrome is not exposing web content: start Chrome with
 |---|---|---|
 | `PollIntervalMs` | 500 | Delay between scans |
 | `CooldownAfterSkipMs` | 1500 | Delay after a skip |
-| `ProcessNames` | `chrome` | Browser processes to scan |
+| `Browsers` | `chrome` (`Chrome_WidgetWin_1`), `firefox` (`MozillaWindowClass`) | Browsers to scan: `ProcessName` (without .exe) and the `WindowClass` of its top-level windows |
 | `PlayerAutomationId` | `movie_player` | HTML id of the YouTube player |
 | `AdShowingClass` | `ad-showing` | Player CSS class while an ad plays |
 | `SkipButtonClassPatterns` | `ytp-ad-skip-button`, `ytp-skip-ad-button` | Regexes on the button's CSS classes |

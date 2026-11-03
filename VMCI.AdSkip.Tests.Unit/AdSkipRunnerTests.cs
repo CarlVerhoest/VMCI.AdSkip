@@ -84,13 +84,11 @@ public class AdSkipRunnerTests
     }
 
     [Fact]
-    public async Task Startup_message_names_processes_and_interval()
+    public async Task Startup_message_names_browsers_and_interval()
     {
-        _settings.ProcessNames = ["chrome", "brave"];
-
         await new AdSkipRunner(new FakeSkipper(), _settings, _log, _time).RunAsync(new CancellationToken(canceled: true));
 
-        Assert.Equal("AdSkip watching chrome, brave every 500 ms. Press Ctrl+C to stop.", _log.Infos[0]);
+        Assert.Equal("AdSkip watching chrome, firefox every 500 ms. Press Ctrl+C to stop.", _log.Infos[0]);
         Assert.Empty(_log.Warnings);
     }
 

@@ -12,8 +12,8 @@ public sealed class AdSkipSettings
     /// <summary>Delay after a skip, so the player can settle (next ad, or the video itself).</summary>
     public int CooldownAfterSkipMs { get; set; } = 1500;
 
-    /// <summary>Browser process names (without .exe) whose windows are scanned.</summary>
-    public string[] ProcessNames { get; set; } = [];
+    /// <summary>Browsers whose windows are scanned.</summary>
+    public BrowserSettings[] Browsers { get; set; } = [];
 
     /// <summary>AutomationId (HTML id) of the YouTube player; skip buttons are only searched inside it.</summary>
     public string PlayerAutomationId { get; set; } = "movie_player";
@@ -41,8 +41,10 @@ public sealed class AdSkipSettings
             errors.Add($"{nameof(CooldownAfterSkipMs)} must be between 0 and 60000 (was {CooldownAfterSkipMs}).");
         if (NoSkipWarningSeconds < 1)
             errors.Add($"{nameof(NoSkipWarningSeconds)} must be at least 1 (was {NoSkipWarningSeconds}).");
-        if (ProcessNames.Length == 0 || ProcessNames.Any(string.IsNullOrWhiteSpace))
-            errors.Add($"{nameof(ProcessNames)} must contain at least one non-empty process name.");
+        if (Browsers.Length == 0)
+            errors.Add($"{nameof(Browsers)} must contain at least one browser.");
+        if (Browsers.Any(b => string.IsNullOrWhiteSpace(b.ProcessName) || string.IsNullOrWhiteSpace(b.WindowClass)))
+            errors.Add($"Every entry in {nameof(Browsers)} needs a {nameof(BrowserSettings.ProcessName)} and a {nameof(BrowserSettings.WindowClass)}.");
         if (string.IsNullOrWhiteSpace(PlayerAutomationId))
             errors.Add($"{nameof(PlayerAutomationId)} must not be empty.");
         if (string.IsNullOrWhiteSpace(AdShowingClass))

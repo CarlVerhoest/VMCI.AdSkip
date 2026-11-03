@@ -6,7 +6,7 @@ public sealed class AdSkipRunner(IAdSkipper skipper, AdSkipSettings settings, IA
     /// <summary>Returns the number of ads skipped before cancellation.</summary>
     public async Task<int> RunAsync(CancellationToken cancellationToken)
     {
-        log.Info($"AdSkip watching {string.Join(", ", settings.ProcessNames)} every {settings.PollIntervalMs} ms. Press Ctrl+C to stop.");
+        log.Info($"AdSkip watching {string.Join(", ", settings.Browsers.Select(b => b.ProcessName))} every {settings.PollIntervalMs} ms. Press Ctrl+C to stop.");
         if (!skipper.HasWebContent())
             log.Warn("No web content visible in any browser window. If ads are not skipped, start Chrome with --force-renderer-accessibility.");
 

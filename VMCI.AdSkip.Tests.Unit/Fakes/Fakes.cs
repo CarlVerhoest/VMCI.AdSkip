@@ -8,10 +8,13 @@ internal static class TestData
     public const string PlayerWithoutAd = "html5-video-player ytp-hide-controls ad-created paused-mode";
     public const string SkipButtonClass = "ytp-ad-skip-button-modern ytp-button ";
 
+    public static BrowserSettings Chrome => new() { ProcessName = "chrome", WindowClass = "Chrome_WidgetWin_1" };
+    public static BrowserSettings Firefox => new() { ProcessName = "firefox", WindowClass = "MozillaWindowClass" };
+
     /// <summary>Same values as the shipped appsettings.json.</summary>
     public static AdSkipSettings Settings() => new()
     {
-        ProcessNames = ["chrome"],
+        Browsers = [Chrome, Firefox],
         SkipButtonClassPatterns = ["ytp-ad-skip-button", "ytp-skip-ad-button"],
         SkipButtonNamePatterns = [@"^\s*skip", @"^\s*overslaan"],
     };
@@ -71,11 +74,11 @@ internal sealed class FakeWindowSource(params FakeWindow[] windows) : IBrowserWi
 {
     public List<FakeWindow> Windows { get; } = [.. windows];
     public Exception? Error { get; set; }
-    public IReadOnlyCollection<string>? RequestedProcessNames { get; private set; }
+    public IReadOnlyCollection<BrowserSettings>? RequestedBrowsers { get; private set; }
 
-    public IReadOnlyList<IBrowserWindow> GetWindows(IReadOnlyCollection<string> processNames)
+    public IReadOnlyList<IBrowserWindow> GetWindows(IReadOnlyCollection<BrowserSettings> browsers)
     {
-        RequestedProcessNames = processNames;
+        RequestedBrowsers = browsers;
         return Error is null ? Windows : throw Error;
     }
 }

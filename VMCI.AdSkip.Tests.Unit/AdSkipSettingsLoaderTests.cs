@@ -13,7 +13,8 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
     {
         var settings = AdSkipSettingsLoader.Load(Path.Combine(AppContext.BaseDirectory, "TestData"));
 
-        Assert.Equal(["chrome"], settings.ProcessNames);
+        Assert.Equal(["chrome", "firefox"], settings.Browsers.Select(b => b.ProcessName));
+        Assert.Equal(["Chrome_WidgetWin_1", "MozillaWindowClass"], settings.Browsers.Select(b => b.WindowClass));
         Assert.Contains("ytp-ad-skip-button", settings.SkipButtonClassPatterns);
         Assert.Contains(@"^\s*overslaan", settings.SkipButtonNamePatterns);
     }
@@ -26,7 +27,10 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
               "AdSkip": {
                 "PollIntervalMs": 250,
                 "CooldownAfterSkipMs": 2000,
-                "ProcessNames": [ "chrome", "brave" ],
+                "Browsers": [
+                  { "ProcessName": "chrome", "WindowClass": "Chrome_WidgetWin_1" },
+                  { "ProcessName": "firefox", "WindowClass": "MozillaWindowClass" }
+                ],
                 "PlayerAutomationId": "player",
                 "AdShowingClass": "ad-on",
                 "SkipButtonClassPatterns": [ "skip-cls" ],
@@ -40,7 +44,8 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
 
         Assert.Equal(250, settings.PollIntervalMs);
         Assert.Equal(2000, settings.CooldownAfterSkipMs);
-        Assert.Equal(["chrome", "brave"], settings.ProcessNames);
+        Assert.Equal(["chrome", "firefox"], settings.Browsers.Select(b => b.ProcessName));
+        Assert.Equal(["Chrome_WidgetWin_1", "MozillaWindowClass"], settings.Browsers.Select(b => b.WindowClass));
         Assert.Equal("player", settings.PlayerAutomationId);
         Assert.Equal("ad-on", settings.AdShowingClass);
         Assert.Equal(["skip-cls"], settings.SkipButtonClassPatterns);
@@ -52,18 +57,18 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
     public void Lists_from_file_are_not_doubled()
     {
         // Regression: the configuration binder appends to non-empty default arrays.
-        WriteSettings("""{ "AdSkip": { "ProcessNames": [ "chrome" ], "SkipButtonClassPatterns": [ "x" ] } }""");
+        WriteSettings("""{ "AdSkip": { "Browsers": [ { "ProcessName": "chrome", "WindowClass": "c" } ], "SkipButtonClassPatterns": [ "x" ] } }""");
 
         var settings = AdSkipSettingsLoader.Load(_directory);
 
-        Assert.Equal(["chrome"], settings.ProcessNames);
+        Assert.Equal("chrome", Assert.Single(settings.Browsers).ProcessName);
         Assert.Equal(["x"], settings.SkipButtonClassPatterns);
     }
 
     [Fact]
     public void Missing_values_keep_their_defaults()
     {
-        WriteSettings("""{ "AdSkip": { "ProcessNames": [ "chrome" ], "SkipButtonClassPatterns": [ "x" ] } }""");
+        WriteSettings("""{ "AdSkip": { "Browsers": [ { "ProcessName": "chrome", "WindowClass": "c" } ], "SkipButtonClassPatterns": [ "x" ] } }""");
 
         var settings = AdSkipSettingsLoader.Load(_directory);
 
@@ -75,9 +80,9 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
     [Fact]
     public void Custom_file_name_is_supported()
     {
-        WriteSettings("""{ "AdSkip": { "ProcessNames": [ "chrome" ], "SkipButtonClassPatterns": [ "x" ] } }""", "custom.json");
+        WriteSettings("""{ "AdSkip": { "Browsers": [ { "ProcessName": "chrome", "WindowClass": "c" } ], "SkipButtonClassPatterns": [ "x" ] } }""", "custom.json");
 
-        Assert.Equal(["chrome"], AdSkipSettingsLoader.Load(_directory, "custom.json").ProcessNames);
+        Assert.Equal("chrome", Assert.Single(AdSkipSettingsLoader.Load(_directory, "custom.json").Browsers).ProcessName);
     }
 
     [Fact]
@@ -112,7 +117,7 @@ public sealed class AdSkipSettingsLoaderTests : IDisposable
 
         var ex = Assert.Throws<AdSkipConfigurationException>(() => AdSkipSettingsLoader.Load(_directory));
         Assert.Contains("Invalid settings", ex.Message);
-        Assert.Contains(nameof(AdSkipSettings.ProcessNames), ex.Message);
+        Assert.Contains(nameof(AdSkipSettings.Browsers), ex.Message);
     }
 
     private void WriteSettings(string json, string fileName = AdSkipSettingsLoader.DefaultFileName) =>

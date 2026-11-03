@@ -13,7 +13,7 @@ public class AdSkipSettingsTests
     {
         var errors = new AdSkipSettings().Validate();
 
-        Assert.Contains(errors, e => e.Contains(nameof(AdSkipSettings.ProcessNames)));
+        Assert.Contains(errors, e => e.Contains(nameof(AdSkipSettings.Browsers)));
         Assert.Contains(errors, e => e.Contains(nameof(AdSkipSettings.SkipButtonClassPatterns)));
     }
 
@@ -24,8 +24,9 @@ public class AdSkipSettingsTests
         { nameof(AdSkipSettings.CooldownAfterSkipMs), s => s.CooldownAfterSkipMs = -1 },
         { nameof(AdSkipSettings.CooldownAfterSkipMs), s => s.CooldownAfterSkipMs = 60_001 },
         { nameof(AdSkipSettings.NoSkipWarningSeconds), s => s.NoSkipWarningSeconds = 0 },
-        { nameof(AdSkipSettings.ProcessNames), s => s.ProcessNames = [] },
-        { nameof(AdSkipSettings.ProcessNames), s => s.ProcessNames = ["chrome", " "] },
+        { nameof(AdSkipSettings.Browsers), s => s.Browsers = [] },
+        { nameof(BrowserSettings.ProcessName), s => s.Browsers = [TestData.Chrome, new() { ProcessName = " ", WindowClass = "MozillaWindowClass" }] },
+        { nameof(BrowserSettings.WindowClass), s => s.Browsers = [TestData.Chrome, new() { ProcessName = "firefox" }] },
         { nameof(AdSkipSettings.PlayerAutomationId), s => s.PlayerAutomationId = "" },
         { nameof(AdSkipSettings.AdShowingClass), s => s.AdShowingClass = " " },
         { nameof(AdSkipSettings.SkipButtonClassPatterns), s => { s.SkipButtonClassPatterns = []; s.SkipButtonNamePatterns = []; } },

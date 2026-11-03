@@ -53,16 +53,17 @@ public class AdSkipperTests
     }
 
     [Fact]
-    public void Uses_configured_process_names_and_player_id()
+    public void Uses_configured_browsers_and_player_id()
     {
-        _settings.ProcessNames = ["brave"];
+        var brave = new BrowserSettings { ProcessName = "brave", WindowClass = "Chrome_WidgetWin_1" };
+        _settings.Browsers = [brave];
         _settings.PlayerAutomationId = "my_player";
         var window = new FakeWindow(1);
         var source = new FakeWindowSource(window);
 
         CreateSkipper(source).Tick();
 
-        Assert.Equal(["brave"], source.RequestedProcessNames);
+        Assert.Same(brave, Assert.Single(source.RequestedBrowsers!));
         Assert.Equal("my_player", window.RequestedPlayerId);
     }
 

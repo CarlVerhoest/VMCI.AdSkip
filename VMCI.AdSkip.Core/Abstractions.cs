@@ -3,7 +3,7 @@ namespace VMCI.AdSkip.Core;
 /// <summary>Supplies the top-level browser windows to scan.</summary>
 public interface IBrowserWindowSource
 {
-    IReadOnlyList<IBrowserWindow> GetWindows(IReadOnlyCollection<string> processNames);
+    IReadOnlyList<IBrowserWindow> GetWindows(IReadOnlyCollection<BrowserSettings> browsers);
 }
 
 /// <summary>A top-level browser window, as seen through UI Automation.</summary>

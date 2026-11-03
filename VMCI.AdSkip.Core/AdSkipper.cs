@@ -36,7 +36,7 @@ public sealed class AdSkipper : IAdSkipper
 
     public bool HasWebContent()
     {
-        foreach (var window in _windowSource.GetWindows(_settings.ProcessNames))
+        foreach (var window in _windowSource.GetWindows(_settings.Browsers))
         {
             try
             {
@@ -58,7 +58,7 @@ public sealed class AdSkipper : IAdSkipper
 
         try
         {
-            foreach (var window in _windowSource.GetWindows(_settings.ProcessNames))
+            foreach (var window in _windowSource.GetWindows(_settings.Browsers))
             {
                 try
                 {
