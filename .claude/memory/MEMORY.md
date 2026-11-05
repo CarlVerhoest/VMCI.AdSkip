@@ -1,0 +1,5 @@
+- [Projectvoortgang](project-voortgang.md) — wat gedaan is, wat open staat, wat nog niet getest is
+- [Gebruiker](user-carl.md) — Carl Verhoest (VMCI), sport op een crosstrainer, werkt op meerdere pc's, Nederlands of Engels
+- [Ontwerpbeslissingen](project-ontwerpbeslissingen.md) — UI Automation i.p.v. netwerk, geen Edge, geen service, kopiëren als distributie
+- [Werkwijze](feedback-werkwijze.md) — werken op main zonder PR, commit/push alleen op vraag, geheugen in de repo
+- [Technische weetjes](reference-technische-weetjes.md) — YouTube-markup, Chrome/Firefox UIA, valkuilen bij testen

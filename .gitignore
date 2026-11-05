@@ -488,3 +488,6 @@ $RECYCLE.BIN/
 
 # VMCI.AdSkip
 TestResults/
+
+# Claude Code: memory (.claude/memory/) and CLAUDE.md ARE tracked; only local settings are not.
+.claude/settings.local.json
