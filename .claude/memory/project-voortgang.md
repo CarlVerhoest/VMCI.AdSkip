@@ -12,6 +12,7 @@ metadata:
 - 2026-11-03: Gepauzeerde advertenties tellen niet mee voor de waarschuwing (`PausedClass`, `6a1814e`).
 - 2026-11-03: Tray-app `AdSkipTray.exe` met dagelijks logbestand en "Start with Windows" (`f31cd35`). Op de eerste pc is de Run-sleutel `VMCI.AdSkip` op vraag van Carl rechtstreeks gezet.
 - 2026-11-05: Claude-geheugen verhuisd naar `.claude/memory/` in de repo, met `CLAUDE.md` en `scripts/setup-claude-memory.ps1`.
+- 2026-11-05: Oude branches `feature/initial-solution` en `feature/firefox-support` verwijderd (lokaal en op GitHub); alleen `main` blijft.
 
 ## Nog niet getest
 - Automatisch starten bij het aanmelden (Run-sleutel bestaat, maar nog niet gezien na afmelden/aanmelden).
@@ -21,4 +22,3 @@ metadata:
 
 ## Open / mogelijk later
 - Automatische updates (Velopack + GitHub Releases) als handmatig kopiëren lastig wordt.
-- Lokale branches `feature/initial-solution` en `feature/firefox-support` (ook op GitHub) mogen weg als Carl dat wil.
